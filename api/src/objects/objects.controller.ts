@@ -12,12 +12,14 @@ import { ObjectsService } from './objects.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { S3Service } from './s3.service';
+import { ObjectsGateway } from './objects.gateway';
 
 @Controller('objects')
 export class ObjectsController {
   constructor(
     private readonly objectsService: ObjectsService,
     private readonly s3Service: S3Service,
+    private readonly gateway: ObjectsGateway,
   ) {}
 
   @Get()
@@ -36,7 +38,8 @@ export class ObjectsController {
     if (object) {
       await this.s3Service.deleteFile(object.imageUrl); // supprime de R2
     }
-    return this.objectsService.remove(id); // supprime de MongoDB
+    await this.objectsService.remove(id); // supprime de MongoDB
+    this.gateway.notifyDeletedObject(id);
   }
 
   @Post()
@@ -46,6 +49,8 @@ export class ObjectsController {
     @Body() body: { title: string; description: string },
   ) {
     const imageUrl = await this.s3Service.uploadFile(file);
-    return this.objectsService.create({ ...body, imageUrl });
+    const object = await this.objectsService.create({ ...body, imageUrl });
+    this.gateway.notifyNewObject(object);
+    return object;
   }
 }
