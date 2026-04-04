@@ -1,0 +1,19 @@
+# Dépendances
+node_modules/
+.pnp
+.pnp.js
+
+# Variables d'environnement — NE JAMAIS commit ça
+.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+.next/
+.expo/
+
+# OS
+.DS_Store
+Thumbs.db
+
