@@ -1,0 +1,17 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "services": {
+    "api": {
+      "root": "api",
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "npm run start:prod",
+      "envPrefix": "API_"
+    },
+    "client": {
+      "root": "client",
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "npm start",
+      "envPrefix": "CLIENT_"
+    }
+  }
+}
