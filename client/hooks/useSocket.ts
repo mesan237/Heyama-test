@@ -10,7 +10,7 @@ export function useSocket({
   onDeleted?: (data: { id: string }) => void;
 }) {
   useEffect(() => {
-    const socket = io('http://localhost:3001');
+    const socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001');
 
     if (onCreated) socket.on('object:created', onCreated);
     if (onDeleted) socket.on('object:deleted', onDeleted);
